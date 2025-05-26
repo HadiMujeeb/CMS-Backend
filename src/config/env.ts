@@ -6,7 +6,7 @@ dotenv.config();
 const envSchema = Joi.object({
   PORT: Joi.number().default(8080),
   DATABASE_URL: Joi.string().uri().required(),
-  FRONTEND_URL: Joi.number().default(5000),
+  FRONTEND_URL: Joi.string().uri().required(),
   JWT_SECRET: Joi.string(),
   JWT_EXPIRES_IN: Joi.string().default('15m'),
   MAIL: Joi.string().email().required(),
