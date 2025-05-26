@@ -25,7 +25,7 @@ export class authController implements IAuthController {
         try {
             const {email,password} = req.body;
             const tokens = await this.authUseCase.loginRequest(email,password);
-            res.cookie("refreshToken",tokens.refreshToken , { maxAge: 604800000, httpOnly: true, secure: ENV.NODE_ENV == "production", sameSite: "lax" });
+            res.cookie("refreshToken",tokens.refreshToken , { maxAge: 604800000, httpOnly: true, secure: ENV.NODE_ENV == "production", sameSite: "none" });
             res.status(HttpStatus.OK).json({ message: SuccessMessages.verify, token: tokens.accessToken });
         } catch (error) {
             next(error)
@@ -36,7 +36,7 @@ export class authController implements IAuthController {
         try {
             const {email,otp} = req.body;
             const tokens = await this.authUseCase.verifyOtpRequest(email,otp);
-            res.cookie("refreshToken",tokens.refreshToken , { maxAge: 604800000, httpOnly: true, secure: ENV.NODE_ENV == "production", sameSite: "lax" });
+            res.cookie("refreshToken",tokens.refreshToken , { maxAge: 604800000, httpOnly: true, secure: ENV.NODE_ENV == "production", sameSite: "none" });
             res.status(HttpStatus.OK).json({ message: SuccessMessages.verify, token: tokens.accessToken });
         } catch (error) {
             next(error)
@@ -59,7 +59,7 @@ export class authController implements IAuthController {
 
     async logoutRequest(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
-            res.clearCookie("refreshToken", { httpOnly: true, secure: process.env.NODE_ENV === "production", sameSite: "lax" });
+            res.clearCookie("refreshToken", { httpOnly: true, secure: process.env.NODE_ENV === "production", sameSite: "none" });
            res.status(HttpStatus.OK).json({ message: SuccessMessages.logout});
         } catch (error) {
             next(error)
